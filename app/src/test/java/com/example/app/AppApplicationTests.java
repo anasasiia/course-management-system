@@ -1,12 +1,13 @@
 package com.example.app;
 
+import config.SpringConfigForIT;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class AppApplicationTests {
+@SpringBootTest(classes = SpringConfigForIT.class)
+public class AppApplicationTests {
+    @Test
+    void contextLoads() {
 
-	@Test
-	void contextLoads() {
-	}
+    }
 }
