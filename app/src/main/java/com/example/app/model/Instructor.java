@@ -7,7 +7,9 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import java.util.List;
 
 @Getter
 @Setter
@@ -26,4 +28,7 @@ public class Instructor {
     private String firstName;
 
     private String lastName;
+
+    @ManyToMany(mappedBy = "instructorList")
+    private List<Course> courseList;
 }
