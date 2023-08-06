@@ -21,7 +21,7 @@ import static com.example.app.controller.CourseController.COURSE_CONTROLLER_PATH
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("${base-url}" + COURSE_CONTROLLER_PATH)
+@RequestMapping(COURSE_CONTROLLER_PATH)
 public class CourseController {
     public static final String COURSE_CONTROLLER_PATH = "/courses";
     public static final String ID = "/id";
@@ -40,7 +40,7 @@ public class CourseController {
     }
 
     @PutMapping(ID)
-    public Course updatecourse(@PathVariable final long id, @RequestBody @Valid final CourseDto courseDto) {
+    public Course updateCourse(@PathVariable final long id, @RequestBody @Valid final CourseDto courseDto) {
         return courseService.updateCourse(id, courseDto);
     }
 
