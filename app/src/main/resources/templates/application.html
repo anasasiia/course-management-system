@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Course management system</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" type="text/css" />
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</head>
+<body class="d-flex flex-column min-vh-100">
+<div id="nav-section">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Course management system</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="navbar-nav">
+                    <a class="nav-link" href="/login">Login</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<main class="flex-grow-1">
+<!--    <div th:if="${session.flash}" th:class="'rounded-0 m-0 alert alert-dismissible fade show alert-'-->
+<!--                      + ${ctx.consumeSessionAttribute('flash-type')}" role="alert">-->
+<!--        <p class="m-0" th:text="${ctx.consumeSessionAttribute('flash')}"></p>-->
+<!--    </div>-->
+
+    <section>
+        <div class=" container-fluid bg-dark p-5">
+            <div class="row">
+                <div class="text-white col-md-10 col-lg-8 mx-auto">
+                    <h1 class="display-3 mb-0">Course management system</h1>
+                    <p class="lead">Keep track of your courses, ask instructors questions and submit homework assignments</p>
+<!--                    <form action="/urls" method="post" class="text-body">-->
+<!--                        <div class="row">-->
+<!--                            <div class="col">-->
+<!--                                <div class="form-floating">-->
+<!--                                    <input id="url-input" autofocus type="text" required name="url" aria-label="url"-->
+<!--                                           class="form-control w-100" placeholder="ссылка RSS" autocomplete="off">-->
+<!--                                    <label for="url-input">Ссылка</label>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="col-auto">-->
+<!--                                <button type="submit" class="h-100 btn btn-lg btn-primary px-sm-5">Проверить</button>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </form>-->
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<div id="footer-section">
+    <footer class="footer border-top py-3 bg-light bottom-0">
+        <div class="container-xl text-center">
+            created by
+            <a href="/">Anastasiia Mineeva</a>
+        </div>
+    </footer>
+</div>
+</body>
+</html>
