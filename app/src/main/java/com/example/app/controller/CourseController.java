@@ -34,7 +34,7 @@ public class CourseController {
         return courseRepository.findAll().stream().toList();
     }
 
-    @PostMapping
+    @PostMapping("new")
     public Course createCourse(@RequestBody @Valid final CourseDto courseDto) {
         return courseService.createCourse(courseDto);
     }

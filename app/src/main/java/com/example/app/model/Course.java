@@ -5,13 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 @Getter
@@ -22,23 +16,33 @@ import java.util.List;
 @Entity
 public class Course {
     @Id
+    @Column(name = "id")
     private long id;
 
+    @Column(name = "name")
     private String name;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(
-            name = "courses_instructors",
-            joinColumns = { @JoinColumn(name = "course_id") },
-            inverseJoinColumns = { @JoinColumn(name = "instructor_id") }
-    )
-    private List<Instructor> instructorList;
+//    @ManyToMany(cascade = { CascadeType.ALL })
+//    @JoinTable(
+//            name = "courses_instructors",
+//            joinColumns = { @JoinColumn(name = "course_id") },
+//            inverseJoinColumns = { @JoinColumn(name = "instructor_id") }
+//    )
+//    private List<Instructor> instructorList;
+//
+//    @ManyToMany(cascade = { CascadeType.ALL })
+//    @JoinTable(
+//            name = "courses_students",
+//            joinColumns = { @JoinColumn(name = "course_id") },
+//            inverseJoinColumns = { @JoinColumn(name = "student_id") }
+//    )
+//    private List<Student> studentList;
 
     @ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(
-            name = "courses_students",
+            name = "courses_users",
             joinColumns = { @JoinColumn(name = "course_id") },
-            inverseJoinColumns = { @JoinColumn(name = "student_id") }
+            inverseJoinColumns = { @JoinColumn(name = "user_id") }
     )
-    private List<Student> studentList;
+    private List<User> userList;
 }
