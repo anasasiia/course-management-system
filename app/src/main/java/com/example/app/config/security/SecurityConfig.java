@@ -1,89 +1,71 @@
 package com.example.app.config.security;
 
-import com.example.app.component.JWTHelper;
-import com.example.app.filter.JWTAuthenticationFilter;
 import com.example.app.filter.JWTAuthorizationFilter;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import com.example.app.service.impl.UserServiceImpl;
+
+import lombok.RequiredArgsConstructor;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
-import org.springframework.security.web.util.matcher.OrRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 
-import java.util.List;
 
-import static org.springframework.http.HttpMethod.POST;
-
-@Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    public static final String LOGIN = "/login";
+@RequiredArgsConstructor
+@EnableGlobalMethodSecurity(securedEnabled = true)
+public class SecurityConfig {
+    private final UserServiceImpl userService;
+    private final JWTAuthorizationFilter jwtAuthorizationFilter;
 
-    public static final List<GrantedAuthority> DEFAULT_AUTHORITIES = List.of(new SimpleGrantedAuthority("USER"));
-
-    private final RequestMatcher publicUrls;
-    private final RequestMatcher loginRequest;
-    private final UserDetailsService userDetailsService;
-    private final PasswordEncoder passwordEncoder;
-    private final JWTHelper jwtHelper;
-
-    public SecurityConfig(@Value("${base-url}") final String baseUrl,
-                          final UserDetailsService userDetailsService,
-                          final PasswordEncoder passwordEncoder,
-                          final JWTHelper jwtHelper) {
-        this.loginRequest = new AntPathRequestMatcher(baseUrl + LOGIN, POST.toString());
-        this.publicUrls = new OrRequestMatcher(
-                loginRequest,
-                new AntPathRequestMatcher(baseUrl),
-                new NegatedRequestMatcher(new AntPathRequestMatcher(baseUrl + "/**"))
-        );
-        this.userDetailsService = userDetailsService;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtHelper = jwtHelper;
-    }
-
-    @Override
-    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder);
-    }
-
-    @Override
-    public void configure(final HttpSecurity http) throws Exception {
-
-        final var authenticationFilter = new JWTAuthenticationFilter(
-                authenticationManagerBean(),
-                loginRequest,
-                jwtHelper
-        );
-
-        final var authorizationFilter = new JWTAuthorizationFilter(
-                publicUrls,
-                jwtHelper
-        );
-
-        http.csrf().disable()
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf().disable()
+                .cors().disable()
                 .authorizeRequests()
-                .antMatchers("/webjars/**").permitAll()
-                .requestMatchers(publicUrls).permitAll()
-                .anyRequest().authenticated()
+                .antMatchers("/courses").authenticated()
+                .antMatchers("/instructors").authenticated()
+                .antMatchers("/students").authenticated()
+                .antMatchers("/instructors/id").authenticated()
+                .antMatchers("/students/id").authenticated()
+                .antMatchers("/courses/new").hasRole("ADMIN")
+                .antMatchers("/users").hasRole("ADMIN")
+                .anyRequest().permitAll()
                 .and()
-                .addFilter(authenticationFilter)
-                .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class)
-                .sessionManagement().disable()
-                .formLogin().disable()
-                .httpBasic().disable()
-                .logout().disable();
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+                .and().addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
+        return http.build();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        daoAuthenticationProvider.setUserDetailsService(userService);
+        return daoAuthenticationProvider;
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+                                                                                                throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 }

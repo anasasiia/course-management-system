@@ -1,9 +1,14 @@
 package com.example.app.filter;
 
 import com.example.app.component.JWTHelper;
+import io.jsonwebtoken.ExpiredJwtException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -11,53 +16,39 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Optional;
+import java.security.SignatureException;
+import java.util.stream.Collectors;
 
-import static com.example.app.config.security.SecurityConfig.DEFAULT_AUTHORITIES;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.SPRING_SECURITY_FORM_USERNAME_KEY;
-
+@Component
+@RequiredArgsConstructor
+@Slf4j
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
-    private static final String BEARER = "Bearer";
-
-    private final RequestMatcher publicUrls;
     private final JWTHelper jwtHelper;
 
-    public JWTAuthorizationFilter(final RequestMatcher publicUrls,
-                                  final JWTHelper jwtHelper) {
-        this.publicUrls = publicUrls;
-        this.jwtHelper = jwtHelper;
-    }
-
     @Override
-    protected boolean shouldNotFilter(final HttpServletRequest request) {
-        return publicUrls.matches(request);
-    }
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+                                                                                throws ServletException, IOException {
+        String authHeader = request.getHeader("Authorization");
+        String username = null;
+        String jwt = null;
 
-    @Override
-    protected void doFilterInternal(final HttpServletRequest request,
-                                    final HttpServletResponse response,
-                                    final FilterChain filterChain) throws ServletException, IOException {
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            jwt = authHeader.substring(7);
+            try {
+                username = jwtHelper.getUsername(jwt);
+            } catch (ExpiredJwtException e) {
+                log.debug("Token is expired");
+            }
+        }
 
-        final var authToken = Optional.ofNullable(request.getHeader(AUTHORIZATION))
-                .map(header -> header.replaceFirst("^" + BEARER, ""))
-                .map(String::trim)
-                .map(jwtHelper::verify)
-                .map(claims -> claims.get(SPRING_SECURITY_FORM_USERNAME_KEY))
-                .map(Object::toString)
-                .map(this::buildAuthToken)
-                .orElseThrow();
-
-
-        SecurityContextHolder.getContext().setAuthentication(authToken);
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+                    username,
+                    null,
+                    jwtHelper.getRoles(jwt).stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList())
+            );
+            SecurityContextHolder.getContext().setAuthentication(token);
+        }
         filterChain.doFilter(request, response);
-    }
-
-    private UsernamePasswordAuthenticationToken buildAuthToken(final String username) {
-        return new UsernamePasswordAuthenticationToken(
-                username,
-                null,
-                DEFAULT_AUTHORITIES
-        );
     }
 }
