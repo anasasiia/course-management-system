@@ -1,7 +1,6 @@
 package com.example.app.controller;
 
 import com.example.app.dto.RegistrationUserDto;
-import com.example.app.dto.UserDto;
 import com.example.app.model.User;
 import com.example.app.repository.UserRepository;
 import com.example.app.service.UserService;
@@ -9,7 +8,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,10 +39,10 @@ public class UserController {
         return userRepository.getById(id);
     }
 
-    @PostMapping
-    public User createUser(final @Valid @RequestBody RegistrationUserDto registrationUserDto) {
-        return userService.createUser(registrationUserDto);
-    }
+//    @PostMapping
+//    public User createUser(final @Valid @RequestBody RegistrationUserDto registrationUserDto) {
+//        return userService.createUser(registrationUserDto);
+//    }
 
     @PutMapping(ID)
     public User updateUser(final @PathVariable long id,

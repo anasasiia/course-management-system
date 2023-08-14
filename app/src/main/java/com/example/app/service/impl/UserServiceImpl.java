@@ -2,11 +2,11 @@ package com.example.app.service.impl;
 
 import com.example.app.dto.RegistrationUserDto;
 import com.example.app.model.User;
-import com.example.app.dto.UserDto;
-import com.example.app.repository.RoleRepository;
 import com.example.app.repository.UserRepository;
 import com.example.app.service.UserService;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     @Override
     public User createUser(final RegistrationUserDto userDto) {
@@ -49,7 +48,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     public Optional<User> findByUsername(String username) {
-        return Optional.ofNullable(userRepository.findByUsername(username));
+        return Optional.ofNullable(userRepository.findByUserName(username));
     }
 
     @Override

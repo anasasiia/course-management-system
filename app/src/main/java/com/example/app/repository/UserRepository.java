@@ -8,5 +8,5 @@ import com.example.app.model.User;
 public interface UserRepository extends JpaRepository<User, Long> {
     User findById(long id);
 
-    User findByUsername(String username);
+    User findByUserName(String username);
 }

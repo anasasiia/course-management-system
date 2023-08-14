@@ -56,10 +56,9 @@ databaseChangeLog:
 #                  constraints:
 #                    nullable: false
 
-#
 
   - changeSet:
-      id: DEV-3
+      id: DEV-2
       author: anastasiia
       changes:
         - createTable:
@@ -125,7 +124,7 @@ databaseChangeLog:
 #            constraintName: student_course_fk
 
   - changeSet:
-      id: DEV-4
+      id: DEV-3
       author: anastasiia
       changes:
         - createTable:
@@ -155,7 +154,7 @@ databaseChangeLog:
             constraintName: user_course_fk
 
   - changeSet:
-      id: DEV-5
+      id: DEV-4
       author: anastasiia
       changes:
         - createTable:
@@ -176,7 +175,7 @@ databaseChangeLog:
                     nullable: false
 
   - changeSet:
-      id: DEV-4
+      id: DEV-5
       author: anastasiia
       changes:
         - createTable:
@@ -205,32 +204,62 @@ databaseChangeLog:
             referencedColumnNames: id
             constraintName: role_user_fk
 
-#  - changeSet:
-#      id: DEV-5
-#      author: anastasiia
-#      changes:
-#        - createTable:
-#            tableName: courses_instructors
-#            columns:
-#              - column:
-#                  name: course_id
-#                  type: integer
-#                  constraints:
-#                    nullable: false
-#              - column:
-#                  name: instructor_id
-#                  type: integer
-#                  constraints:
-#                    nullable: false
-#        - addForeignKeyConstraint:
-#            baseTableName: courses_instructors
-#            baseColumnNames: course_id
-#            referencedTableName: courses
-#            referencedColumnNames: id
-#            constraintName: course_instructor_fk
-#        - addForeignKeyConstraint:
-#            baseTableName: courses_instructors
-#            baseColumnNames: instructor_id
-#            referencedTableName: instructors
-#            referencedColumnNames: id
-#            constraintName: instructor_course_fk
+  - changeSet:
+      id: DEV-6
+      author: anastasiia
+      changes:
+        - createTable:
+            tableName: courses_instructors
+            columns:
+              - column:
+                  name: course_id
+                  type: integer
+                  constraints:
+                    nullable: false
+              - column:
+                  name: instructor_id
+                  type: integer
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: courses_instructors
+            baseColumnNames: course_id
+            referencedTableName: courses
+            referencedColumnNames: id
+            constraintName: course_instructor_fk
+        - addForeignKeyConstraint:
+            baseTableName: courses_instructors
+            baseColumnNames: instructor_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: instructor_course_fk
+
+  - changeSet:
+      id: DEV-7
+      author: anastasiia
+      changes:
+        - createTable:
+            tableName: courses_students
+            columns:
+              - column:
+                  name: course_id
+                  type: integer
+                  constraints:
+                    nullable: false
+              - column:
+                  name: student_id
+                  type: integer
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: courses_students
+            baseColumnNames: course_id
+            referencedTableName: courses
+            referencedColumnNames: id
+            constraintName: course_student_fk
+        - addForeignKeyConstraint:
+            baseTableName: courses_students
+            baseColumnNames: student_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: student_course_fk

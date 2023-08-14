@@ -1,7 +1,6 @@
 package com.example.app.dto;
 
-import com.example.app.model.Instructor;
-import com.example.app.model.Student;
+import com.example.app.model.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +11,7 @@ import java.util.List;
 public class CourseDto {
     private String name;
 
-    private List<Instructor> instructorList;
+    private List<User> instructorList;
 
-    private List<Student> studentList;
+    private List<User> studentList;
 }

@@ -7,9 +7,9 @@ import com.example.app.dto.UserDto;
 import com.example.app.exceptions.AppError;
 import com.example.app.model.User;
 import com.example.app.service.AuthService;
-import com.example.app.service.UserService;
-import lombok.AllArgsConstructor;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
