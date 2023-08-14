@@ -20,12 +20,50 @@ databaseChangeLog:
                   constraints:
                     nullable: false
 
+#  - changeSet:
+#      id: DEV-2
+#      author: anastasiia
+#      changes:
+#        - createTable:
+#            tableName: instructors
+#            columns:
+#              - column:
+#                  name: id
+#                  type: integer
+#                  autoIncrement: false
+#                  constraints:
+#                    primaryKey: true
+#                    primaryKeyName: instructor_pk
+#                    nullable: false
+#              - column:
+#                  name: userName
+#                  type: varchar(50)
+#                  constraints:
+#                    nullable: false
+#              - column:
+#                  name: password
+#                  type: varchar(50)
+#                  constraints:
+#                    nullable: false
+#              - column:
+#                  name: firstName
+#                  type: varchar(50)
+#                  constraints:
+#                    nullable: false
+#              - column:
+#                  name: lastName
+#                  type: varchar(50)
+#                  constraints:
+#                    nullable: false
+
+#
+
   - changeSet:
-      id: DEV-2
+      id: DEV-3
       author: anastasiia
       changes:
         - createTable:
-            tableName: instructors
+            tableName: users
             columns:
               - column:
                   name: id
@@ -33,7 +71,7 @@ databaseChangeLog:
                   autoIncrement: false
                   constraints:
                     primaryKey: true
-                    primaryKeyName: instructor_pk
+                    primaryKeyName: user_pk
                     nullable: false
               - column:
                   name: userName
@@ -56,12 +94,72 @@ databaseChangeLog:
                   constraints:
                     nullable: false
 
+#  - changeSet:
+#      id: DEV-4
+#      author: anastasiia
+#      changes:
+#        - createTable:
+#            tableName: courses_students
+#            columns:
+#              - column:
+#                  name: course_id
+#                  type: integer
+#                  constraints:
+#                    nullable: false
+#              - column:
+#                  name: student_id
+#                  type: integer
+#                  constraints:
+#                    nullable: false
+#        - addForeignKeyConstraint:
+#            baseTableName: courses_students
+#            baseColumnNames: course_id
+#            referencedTableName: courses
+#            referencedColumnNames: id
+#            constraintName: course_student_fk
+#        - addForeignKeyConstraint:
+#            baseTableName: courses_students
+#            baseColumnNames: student_id
+#            referencedTableName: students
+#            referencedColumnNames: id
+#            constraintName: student_course_fk
+
   - changeSet:
-      id: DEV-3
+      id: DEV-4
       author: anastasiia
       changes:
         - createTable:
-            tableName: students
+            tableName: courses_users
+            columns:
+              - column:
+                  name: course_id
+                  type: integer
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: integer
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: courses_users
+            baseColumnNames: course_id
+            referencedTableName: courses
+            referencedColumnNames: id
+            constraintName: course_user_fk
+        - addForeignKeyConstraint:
+            baseTableName: courses_users
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: user_course_fk
+
+  - changeSet:
+      id: DEV-5
+      author: anastasiia
+      changes:
+        - createTable:
+            tableName: roles
             columns:
               - column:
                   name: id
@@ -69,25 +167,10 @@ databaseChangeLog:
                   autoIncrement: false
                   constraints:
                     primaryKey: true
-                    primaryKeyName: student_pk
+                    primaryKeyName: role_pk
                     nullable: false
               - column:
-                  name: userName
-                  type: varchar(50)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: password
-                  type: varchar(50)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: firstName
-                  type: varchar(50)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: lastName
+                  name: name
                   type: varchar(50)
                   constraints:
                     nullable: false
@@ -97,57 +180,57 @@ databaseChangeLog:
       author: anastasiia
       changes:
         - createTable:
-            tableName: courses_students
+            tableName: users_roles
             columns:
               - column:
-                  name: course_id
+                  name: user_id
                   type: integer
                   constraints:
                     nullable: false
               - column:
-                  name: student_id
+                  name: role_id
                   type: integer
                   constraints:
                     nullable: false
         - addForeignKeyConstraint:
-            baseTableName: courses_students
-            baseColumnNames: course_id
-            referencedTableName: courses
+            baseTableName: users_roles
+            baseColumnNames: user_id
+            referencedTableName: users
             referencedColumnNames: id
-            constraintName: course_student_fk
+            constraintName: user_role_fk
         - addForeignKeyConstraint:
-            baseTableName: courses_students
-            baseColumnNames: student_id
-            referencedTableName: students
+            baseTableName: users_roles
+            baseColumnNames: role_id
+            referencedTableName: roles
             referencedColumnNames: id
-            constraintName: student_course_fk
+            constraintName: role_user_fk
 
-  - changeSet:
-      id: DEV-5
-      author: anastasiia
-      changes:
-        - createTable:
-            tableName: courses_instructors
-            columns:
-              - column:
-                  name: course_id
-                  type: integer
-                  constraints:
-                    nullable: false
-              - column:
-                  name: instructor_id
-                  type: integer
-                  constraints:
-                    nullable: false
-        - addForeignKeyConstraint:
-            baseTableName: courses_instructors
-            baseColumnNames: course_id
-            referencedTableName: courses
-            referencedColumnNames: id
-            constraintName: course_instructor_fk
-        - addForeignKeyConstraint:
-            baseTableName: courses_instructors
-            baseColumnNames: instructor_id
-            referencedTableName: instructors
-            referencedColumnNames: id
-            constraintName: instructor_course_fk
+#  - changeSet:
+#      id: DEV-5
+#      author: anastasiia
+#      changes:
+#        - createTable:
+#            tableName: courses_instructors
+#            columns:
+#              - column:
+#                  name: course_id
+#                  type: integer
+#                  constraints:
+#                    nullable: false
+#              - column:
+#                  name: instructor_id
+#                  type: integer
+#                  constraints:
+#                    nullable: false
+#        - addForeignKeyConstraint:
+#            baseTableName: courses_instructors
+#            baseColumnNames: course_id
+#            referencedTableName: courses
+#            referencedColumnNames: id
+#            constraintName: course_instructor_fk
+#        - addForeignKeyConstraint:
+#            baseTableName: courses_instructors
+#            baseColumnNames: instructor_id
+#            referencedTableName: instructors
+#            referencedColumnNames: id
+#            constraintName: instructor_course_fk
