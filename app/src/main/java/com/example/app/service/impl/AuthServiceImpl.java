@@ -27,14 +27,14 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public ResponseEntity<?> createAuthToken(LoginDto loginDto) {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getEmail(),
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUserName(),
                     loginDto.getPassword()));
         } catch (BadCredentialsException e) {
             return new ResponseEntity<>(new AppError(HttpStatus.UNAUTHORIZED.value(),
                     "Wrong username or password"), HttpStatus.UNAUTHORIZED);
         }
 
-        UserDetails userDetails = userService.loadUserByUsername(loginDto.getEmail());
+        UserDetails userDetails = userService.loadUserByUsername(loginDto.getUserName());
         String token = jwtHelper.generateToken(userDetails);
         return ResponseEntity.ok(token);
     }
