@@ -12,4 +12,6 @@ public interface GroupService {
     void addStudentToGroup(long groupId, long studentId);
 
     void deleteStudentFromGroup(long groupId, long studentId);
+
+    Group findGroupByIdAndByTeacherId(long teacherId, long groupId);
 }

@@ -14,19 +14,19 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class GroupController {
 
-    private GroupService groupService;
+    private final GroupService groupService;
 
-    @GetMapping("{groupId}")
+    @GetMapping("/{groupId}")
     public ResponseEntity<?> getGroupById(@PathVariable long groupId) {
         return ResponseEntity.ok().body(groupService.findGroupById(groupId));
     }
 
-    @GetMapping("{groupId}/students")
+    @GetMapping("/{groupId}/students")
     public ResponseEntity<?> getStudentsByGroupId(@PathVariable long groupId) {
         return ResponseEntity.ok().body(groupService.findGroupById(groupId).getStudentList());
     }
 
-    @PostMapping("create")
+    @PostMapping("/create")
     public ResponseEntity<?> createGroup(@RequestBody GroupDto groupDto) {
         try {
             groupService.createGroup(groupDto);
@@ -39,13 +39,13 @@ public class GroupController {
         }
     }
 
-    @DeleteMapping("{groupId}")
+    @DeleteMapping("/{groupId}")
     public ResponseEntity<?> deleteGroup(@PathVariable long groupId) {
         groupService.deleteGroupById(groupId);
         return ResponseEntity.ok().body(new MessageResponse("Group with id " + groupId + " was deleted"));
     }
 
-    @PutMapping("update/{groupId}/{studentId}")
+    @PutMapping("/update/{groupId}/{studentId}")
     public ResponseEntity<?> addStudentToGroup(@PathVariable long groupId, @PathVariable long studentId) {
         try {
             groupService.addStudentToGroup(groupId, studentId);
@@ -60,7 +60,7 @@ public class GroupController {
         }
     }
 
-    @PutMapping("delete/{groupId}/{studentId}")
+    @PutMapping("/delete/{groupId}/{studentId}")
     public ResponseEntity<?> deleteStudentFromGroup(@PathVariable long groupId, @PathVariable long studentId) {
         groupService.deleteStudentFromGroup(groupId, studentId);
         return ResponseEntity.ok().body(new MessageResponse("Student with id " + studentId

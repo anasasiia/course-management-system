@@ -1,14 +1,12 @@
 package com.example.app.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.util.List;
 
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 public class GroupDto {
     private String name;
     private List<Long> studentsId;

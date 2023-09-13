@@ -1,26 +1,20 @@
 package com.example.app.service.impl;
 
 import com.example.app.dto.TeacherDto;
-import com.example.app.model.Group;
 import com.example.app.model.Teacher;
 import com.example.app.repository.TeacherRepository;
 import com.example.app.service.TeacherService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.Optional;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TeacherServiceImpl implements TeacherService {
+
     private final TeacherRepository teacherRepository;
-//    @Override
-//    public Page<Group> findGroupsByTeacherId(long id, Pageable pageable) {
-//        Teacher teacher = teacherRepository.findById(id).get();
-//        return teacher.getGroupList();
-//    }
 
     @Override
     public Teacher findTeacherById(long id) {

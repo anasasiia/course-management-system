@@ -1,7 +1,7 @@
 package com.example.app.repository;
 
 import com.example.app.model.Group;
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
