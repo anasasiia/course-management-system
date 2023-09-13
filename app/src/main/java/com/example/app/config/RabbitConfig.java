@@ -1,21 +1,20 @@
 package com.example.app.config;
 
-import com.rabbitmq.client.ConnectionFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.amqp.core.*;
+import org.springframework.amqp.core.AmqpAdmin;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableRabbit
 public class RabbitConfig {
-    Logger logger = LoggerFactory.getLogger(RabbitConfig.class);
 
     @Bean
     public CachingConnectionFactory connectionFactory() {
@@ -33,17 +32,27 @@ public class RabbitConfig {
     }
 
     @Bean
-    public Queue myQueue() {
-        return new Queue("myQueue");
+    public Queue studentQueue() {
+        return new Queue("studentQueue");
     }
 
     @Bean
-    public FanoutExchange fanoutExchange() {
-        return new FanoutExchange("exchange");
+    public Queue teacherQueue() {
+        return new Queue("teacherQueue");
+    }
+
+    @Bean
+    public DirectExchange directExchange() {
+        return new DirectExchange("directExchange");
+    }
+
+    @Bean
+    public Binding studentBinding() {
+        return BindingBuilder.bind(studentQueue()).to(directExchange()).with("studentQueue");
     }
 
     @Bean
     public Binding binding() {
-        return BindingBuilder.bind(myQueue()).to(fanoutExchange());
+        return BindingBuilder.bind(teacherQueue()).to(directExchange()).with("teacherQueue");
     }
 }
