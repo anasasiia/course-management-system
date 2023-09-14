@@ -1,7 +1,8 @@
 package com.example.app.controller;
 
 import com.example.app.dto.MessageResponse;
-import com.example.app.dto.TaskDto;
+import com.example.app.dto.TaskDtoToCreate;
+import com.example.app.dto.TaskDtoToUpdate;
 import com.example.app.model.Task;
 import com.example.app.service.TaskService;
 import lombok.RequiredArgsConstructor;
@@ -53,16 +54,16 @@ public class TaskController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createTask(@RequestBody TaskDto taskDto) {
+    public ResponseEntity<?> createTask(@RequestBody TaskDtoToCreate taskDtoToCreate) {
         try {
-            Task task = taskService.create(taskDto);
+            Task task = taskService.create(taskDtoToCreate);
 
             template.convertAndSend("studentQueue",
                     "New task " + task.getName() + " was created");
             return ResponseEntity.ok().body(task);
         } catch (RuntimeException e) {
-            log.error("Task with name " + taskDto.getName() + " was not created. Error: " + e.getLocalizedMessage());
-            return ResponseEntity.badRequest().body(new MessageResponse("Task with name " + taskDto.getName() +
+            log.error("Task with name " + taskDtoToCreate.getName() + " was not created. Error: " + e.getLocalizedMessage());
+            return ResponseEntity.badRequest().body(new MessageResponse("Task with name " + taskDtoToCreate.getName() +
                     " was not created. Error: " + e.getLocalizedMessage()));
         }
 
@@ -94,14 +95,14 @@ public class TaskController {
     }
 
     @PutMapping("/update/{taskId}")
-    public ResponseEntity<?> updateTask(@PathVariable long taskId, @RequestBody TaskDto taskDto) {
+    public ResponseEntity<?> updateTask(@PathVariable long taskId, @RequestBody TaskDtoToUpdate taskDtoToUpdate) {
         try {
-            taskService.update(taskId, taskDto);
+            taskService.update(taskId, taskDtoToUpdate);
             return ResponseEntity.ok().body(new MessageResponse("Task with name " +
-                    taskDto.getName() + " was updated"));
+                    taskDtoToUpdate.getName() + " was updated"));
         } catch (RuntimeException e) {
-            log.error("Task with name " + taskDto.getName() + " was not updated. Error: " + e.getLocalizedMessage());
-            return ResponseEntity.badRequest().body(new MessageResponse("Task with name " + taskDto.getName() +
+            log.error("Task with name " + taskDtoToUpdate.getName() + " was not updated. Error: " + e.getLocalizedMessage());
+            return ResponseEntity.badRequest().body(new MessageResponse("Task with name " + taskDtoToUpdate.getName() +
                     " was not updated. Error: " + e.getLocalizedMessage()));
         }
     }

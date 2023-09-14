@@ -1,8 +1,10 @@
 package com.example.app.service.impl;
 
-import com.example.app.dto.TaskDto;
+import com.example.app.dto.TaskDtoToCreate;
+import com.example.app.dto.TaskDtoToUpdate;
 import com.example.app.model.Task;
 import com.example.app.repository.TaskRepository;
+import com.example.app.service.FileService;
 import com.example.app.service.GroupService;
 import com.example.app.service.TaskService;
 import com.example.app.service.TeacherService;
@@ -15,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -23,6 +26,7 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final GroupService groupService;
     private final TeacherService teacherService;
+    private final FileService fileService;
     @Override
     public Task findTaskByIdAndByStudentId(long studentId, long taskId) {
         return taskRepository.findTaskByIdAndByStudentId(studentId, taskId)
@@ -46,35 +50,34 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task create(TaskDto taskDto) {
-        if (groupService.findGroupByIdAndByTeacherId(taskDto.getTeacher().getId(),
-                taskDto.getGroup().getId()) == null) {
+    public Task create(TaskDtoToCreate taskDtoToCreate) {
+        if (groupService.findGroupByIdAndByTeacherId(taskDtoToCreate.getTeacher().getId(),
+                taskDtoToCreate.getGroup().getId()) == null) {
             throw new RuntimeException("It is not possible to create a task for this group, " +
                     "because it is assigned to another teacher");
         }
         Task task = new Task();
-        task.setName(taskDto.getName());
-        task.setDescription(taskDto.getDescription());
-        task.setStartLine(taskDto.getStartLine());
-        task.setDeadLine(taskDto.getDeadLine());
-        task.setGroup(taskDto.getGroup());
-        task.setTeacher(taskDto.getTeacher());
+        task.setName(taskDtoToCreate.getName());
+        task.setDescription(taskDtoToCreate.getDescription());
+        task.setStartLine(taskDtoToCreate.getStartLine());
+        task.setDeadLine(taskDtoToCreate.getDeadLine());
+        task.setGroup(taskDtoToCreate.getGroup());
+        task.setTeacher(taskDtoToCreate.getTeacher());
         return taskRepository.save(task);
     }
 
     @Override
-    public void update(long id, TaskDto taskDto) {
+    public void update(long id, TaskDtoToUpdate taskDtoToUpdate) {
         Task task = findTaskById(id);
 
-        if (!task.getTeacher().equals(teacherService.findTeacherById(taskDto.getTeacher().getId()))) {
+        if (!task.getTeacher().equals(teacherService.findTeacherById(task.getTeacher().getId()))) {
             throw new RuntimeException("It is not possible to update this task, " +
                     "because it was created by another teacher");
         }
 
-        task.setName(taskDto.getName());
-        task.setDescription(taskDto.getDescription());
-        task.setStartLine(taskDto.getStartLine());
-        task.setDeadLine(taskDto.getDeadLine());
+        task.setName(taskDtoToUpdate.getName());
+        task.setDescription(taskDtoToUpdate.getDescription());
+        task.setDeadLine(taskDtoToUpdate.getDeadLine());
 
         taskRepository.save(task);
     }
@@ -99,7 +102,7 @@ public class TaskServiceImpl implements TaskService {
         Task task = findTaskById(taskId);
         task.getFileUri().addAll(Arrays.stream(files)
                 .map(fileService::uploadFile)
-                .toList());
+                .collect(Collectors.toSet()));
         taskRepository.save(task);
     }
 

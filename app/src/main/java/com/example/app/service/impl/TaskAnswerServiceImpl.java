@@ -3,6 +3,7 @@ package com.example.app.service.impl;
 import com.example.app.dto.TaskAnswerDto;
 import com.example.app.model.TaskAnswer;
 import com.example.app.repository.TaskAnswerRepository;
+import com.example.app.service.FileService;
 import com.example.app.service.StudentService;
 import com.example.app.service.TaskAnswerService;
 import com.example.app.service.TaskService;
@@ -23,6 +24,7 @@ public class TaskAnswerServiceImpl implements TaskAnswerService {
     private final TaskAnswerRepository taskAnswerRepository;
     private final StudentService studentService;
     private final TaskService taskService;
+    private final FileService fileService;
     @Override
     public TaskAnswer findByStudentIdAndByTaskId(long studentId, long taskId) {
         return taskAnswerRepository.findByStudentIdAndByTaskId(studentId, taskId)
@@ -38,7 +40,7 @@ public class TaskAnswerServiceImpl implements TaskAnswerService {
     public void addFileToAnswer(long answerId, MultipartFile[] files) {
         TaskAnswer taskAnswer = findById(answerId);
         taskAnswer.getAnswersUri().addAll(Arrays.stream(files)
-                .map(FileService::uploadFiles)
+                .map(fileService::uploadFile)
                 .collect(Collectors.toSet()));
         taskAnswerRepository.save(taskAnswer);
     }
