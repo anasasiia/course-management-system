@@ -34,7 +34,6 @@ public class TaskAnswerController {
             taskAnswerService.addFileToAnswer(answerId, files);
             return ResponseEntity.ok().body(new MessageResponse("Files were added to answer with id " + answerId));
         } catch (RuntimeException e) {
-            log.error("Files can not be added to answer with id " + answerId + ". Error: " + e.getLocalizedMessage());
             return ResponseEntity.internalServerError().body(new MessageResponse("Files can not be added to answer with id " +
                     answerId + ". Error: " + e.getLocalizedMessage()));
         }
@@ -46,7 +45,6 @@ public class TaskAnswerController {
             taskAnswerService.deleteFileFromAnswer(answerId, fileUri);
             return ResponseEntity.ok().body(new MessageResponse("Files were deleted from answer with id " + answerId));
         } catch (RuntimeException e) {
-            log.error("File can not be deleted from answer with " + answerId + ". Error: " + e.getLocalizedMessage());
             return ResponseEntity.internalServerError()
                     .body(new MessageResponse("File can not be deleted from answer with " + answerId +
                             ". Error: " + e.getLocalizedMessage()));
@@ -62,7 +60,6 @@ public class TaskAnswerController {
                             "from the group " + answer.getStudent().getGroup() + " sent answer for the task");
             return ResponseEntity.ok().body(answer);
         } catch (RuntimeException e) {
-            log.error("Answer " + answerDto.getComment() + " was not sent. Error: " + e.getLocalizedMessage());
             return ResponseEntity.internalServerError().body(new MessageResponse("Answer " + answerDto.getComment() +
                     " was not sent. Error: " + e.getLocalizedMessage()));
         }
@@ -74,7 +71,6 @@ public class TaskAnswerController {
             taskAnswerService.update(answerId, answerDto);
             return ResponseEntity.ok().body(new MessageResponse("Answer was updated"));
         } catch (RuntimeException e) {
-            log.error("Answer can not be updated. Error: " + e.getLocalizedMessage());
             return ResponseEntity.internalServerError().body(new MessageResponse("Answer can not be updated. Error: " +
                     e.getLocalizedMessage()));
         }
@@ -91,7 +87,6 @@ public class TaskAnswerController {
             taskAnswerService.delete(answerId);
             return ResponseEntity.ok().body(new MessageResponse("Answer with id " + answerId + " was deleted"));
         } catch (RuntimeException e) {
-            log.error("Answer with id=" + answerId + " was not deleted. Error: " + e.getLocalizedMessage());
             return ResponseEntity.internalServerError().body(new MessageResponse("Answer with id=" + answerId +
                     " was not deleted. Error: " + e.getLocalizedMessage()));
         }

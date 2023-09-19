@@ -15,24 +15,16 @@ import java.util.Optional;
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
     @Transactional
-    @Query(value = "SELECT t " +
-            "FROM Tasks t " +
-            "JOIN t.group.students s " +
-            "WHERE s.id = ?1 AND t.id = ?2")
+    @Query(value = "SELECT t FROM Task t JOIN t.group.students s WHERE s.id = ?1 AND t.id = ?2")
     Optional<Task> findTaskByIdAndByStudentId(long studentId, long taskId);
 
     @Transactional
-    @Query(value = "SELECT t " +
-            "FROM Tasks t " +
-            "JOIN t.teacher.subjects sub " +
-            "JOIN t.group.students stu " +
-            "WHERE stu.id = ?1 AND sub.id = ?2")
+    @Query(value = "SELECT t FROM Task t JOIN t.teacher.subjects s JOIN t.group.students st " +
+            "WHERE st.id = ?1 AND s.id = ?2")
     List<Task> findAllTasksByStudentIdAndSubjectId(long studentId, long subjectId);
 
     @Transactional
-    @Query(value = "SELECT t " +
-            "FROM Tasks t " +
-            "WHERE t.teacher.id = ?1 AND t.id = ?2")
+    @Query(value = "SELECT t FROM Task t WHERE t.teacher.id = ?1 AND t.id = ?2")
     Optional<Task> findTaskByIdAndByTeacherId(long teacherId, long taskId);
 
     Page<Task> findAllTasksByTeacherId(long teacherId, Pageable pageable);

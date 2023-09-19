@@ -29,7 +29,7 @@ public class TeacherController {
 
     @GetMapping("/{teacherId}/groups")
     public ResponseEntity<?> getGroupsByTeacherId(@PathVariable long teacherId) {
-        return ResponseEntity.ok().body(teacherService.findTeacherById(teacherId).getGroupList());
+        return ResponseEntity.ok().body(teacherService.findTeacherById(teacherId).getGroups());
     }
 
     @PostMapping("/create")
@@ -39,8 +39,6 @@ public class TeacherController {
             return ResponseEntity.ok().body(new MessageResponse("Teacher was created with a name " +
                     teacherDto.getFirstName() + " " + teacherDto.getLastName()));
         } catch (RuntimeException e) {
-            log.error("Teacher with a name " + teacherDto.getFirstName() + " " + teacherDto.getLastName() +
-                    " was not created. Error " + e.getLocalizedMessage());
             return ResponseEntity.badRequest().body("Teacher with a name " + teacherDto.getFirstName() + " " +
                     teacherDto.getLastName() + " was not created. Error " + e.getLocalizedMessage());
         }
@@ -53,8 +51,6 @@ public class TeacherController {
             return ResponseEntity.ok().body(new MessageResponse("Teacher was updated with a name " +
                     teacherDto.getFirstName() + " " + teacherDto.getLastName()));
         } catch (RuntimeException e) {
-            log.error("Teacher with a name " + teacherDto.getFirstName() + " " + teacherDto.getLastName() +
-                    " was not updated. Error " + e.getLocalizedMessage());
             return ResponseEntity.badRequest().body("Teacher with a name " + teacherDto.getFirstName() + " " +
                     teacherDto.getLastName() + " was not updated. Error " + e.getLocalizedMessage());
         }

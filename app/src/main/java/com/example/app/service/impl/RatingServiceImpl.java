@@ -50,7 +50,7 @@ public class RatingServiceImpl implements RatingService {
         Task task = taskService.findTaskById(ratingDtoToCreate.getTaskId());
         Student student = studentService.findStudentById(ratingDtoToCreate.getStudentId());
 
-        if (!task.getTeacher().getGroupList().contains(student.getGroup())) {
+        if (!task.getTeacher().getGroups().contains(student.getGroup())) {
             throw new RuntimeException("It is not allowed to rate this task. Group is assigned to another teacher");
         }
 
@@ -61,7 +61,7 @@ public class RatingServiceImpl implements RatingService {
         rating.setSubject(subjectService.findSubjectById(ratingDtoToCreate.getSubjectId()));
         rating.setStudent(student);
 
-        studentService.findStudentById(ratingDtoToCreate.getStudentId()).getRatingList().add(rating);
+        studentService.findStudentById(ratingDtoToCreate.getStudentId()).getRatings().add(rating);
         return ratingRepository.save(rating);
     }
 

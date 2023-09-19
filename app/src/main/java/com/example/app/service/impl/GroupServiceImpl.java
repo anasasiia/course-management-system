@@ -25,13 +25,13 @@ public class GroupServiceImpl implements GroupService {
     public void createGroup(GroupDto groupDto) {
         Group group = new Group();
         group.setName(groupDto.getName());
-        groupDto.getStudentsId().forEach(id -> group.getStudentList().add(studentService.findStudentById(id)));
+        groupDto.getStudentsId().forEach(id -> group.getStudents().add(studentService.findStudentById(id)));
         groupRepository.save(group);
     }
 
     @Override
     public void deleteGroupById(long groupId) {
-        if (groupRepository.existById(groupId)) {
+        if (groupRepository.existsById(groupId)) {
             groupRepository.deleteById(groupId);
         } else {
             throw new RuntimeException("Group with id " + groupId + "does not exist. It is impossible to delete");
@@ -41,14 +41,14 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public void addStudentToGroup(long groupId, long studentId) {
         Group group = findGroupById(groupId);
-        group.getStudentList().add(studentService.findStudentById(studentId));
+        group.getStudents().add(studentService.findStudentById(studentId));
         groupRepository.save(group);
     }
 
     @Override
     public void deleteStudentFromGroup(long groupId, long studentId) {
         Group group = findGroupById(groupId);
-        group.getStudentList().remove(studentService.findStudentById(studentId));
+        group.getStudents().remove(studentService.findStudentById(studentId));
         groupRepository.save(group);
     }
 

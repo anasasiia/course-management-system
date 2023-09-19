@@ -2,7 +2,6 @@ package com.example.app.service;
 
 import com.example.app.dto.SubjectDto;
 import com.example.app.model.Subject;
-import com.example.app.model.Teacher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

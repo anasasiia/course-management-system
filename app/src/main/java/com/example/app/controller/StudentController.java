@@ -34,8 +34,6 @@ public class StudentController {
             return ResponseEntity.ok().body(new MessageResponse("Student was created with a name " +
                     studentDto.getFirstName() + " " + studentDto.getLastName()));
         } catch (RuntimeException e) {
-            log.error("Student with a name " + studentDto.getFirstName() + " " + studentDto.getLastName() +
-                    " was not created. Error " + e.getLocalizedMessage());
             return ResponseEntity.badRequest().body("Student with a name " + studentDto.getFirstName() + " " + studentDto.getLastName() +
                     " was not created. Error " + e.getLocalizedMessage());
         }
@@ -48,7 +46,6 @@ public class StudentController {
             return ResponseEntity.ok().body(new MessageResponse("Student with a name " +
                     studentDto.getFirstName() + " " + studentDto.getLastName()) + " was updated");
         } catch (RuntimeException e) {
-            log.error("Student with id " + studentId + " was not updated. Error " + e.getLocalizedMessage());
             return ResponseEntity.badRequest().body("Student with id " + studentId + " was not updated. Error " +
                     e.getLocalizedMessage());
         }

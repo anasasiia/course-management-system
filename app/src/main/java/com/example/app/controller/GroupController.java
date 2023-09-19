@@ -23,7 +23,7 @@ public class GroupController {
 
     @GetMapping("/{groupId}/students")
     public ResponseEntity<?> getStudentsByGroupId(@PathVariable long groupId) {
-        return ResponseEntity.ok().body(groupService.findGroupById(groupId).getStudentList());
+        return ResponseEntity.ok().body(groupService.findGroupById(groupId).getStudents());
     }
 
     @PostMapping("/create")
@@ -32,8 +32,6 @@ public class GroupController {
             groupService.createGroup(groupDto);
             return ResponseEntity.ok().body(new MessageResponse("Group was created with a name " + groupDto.getName()));
         } catch (RuntimeException e) {
-            log.error("Group with a name " + groupDto.getName() + " was not created. Error: " + e.getLocalizedMessage());
-
             return ResponseEntity.badRequest().body(new MessageResponse("Group with a name "
                     + groupDto.getName() + " was not created. Error: " + e.getLocalizedMessage()));
         }
@@ -52,9 +50,6 @@ public class GroupController {
             return ResponseEntity.ok().body(new MessageResponse("Student with id " + studentId
                     + " was added to the group with id " + groupId));
         } catch (RuntimeException e) {
-            log.error("Student with id " + studentId + " was not added to the group with id" + groupId + ". Error "
-                    + e.getLocalizedMessage());
-
             return ResponseEntity.badRequest().body(new MessageResponse("Student with id " + studentId
                     + " was not added to the group with id" + groupId + ". Error " + e.getLocalizedMessage()));
         }

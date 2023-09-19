@@ -43,8 +43,6 @@ public class RatingController {
                     "You task answer was rated. Your mark is " + ratingDtoToCreate.getMark());
             return ResponseEntity.ok().body(rating);
         } catch (RuntimeException e) {
-            log.error("Rating for a student with id=" + ratingDtoToCreate.getStudentId() + " was not created. Error: " +
-                    e.getLocalizedMessage());
             return ResponseEntity.internalServerError().body(new MessageResponse("Rating for a student with id=" +
                     ratingDtoToCreate.getStudentId() + " was not created. Error: " + e.getLocalizedMessage()));
         }
@@ -58,8 +56,6 @@ public class RatingController {
             return ResponseEntity.ok().body(new MessageResponse("Rating with id=" + ratingId +
                     "was updated by teacher with id=" + teacherId));
         } catch (RuntimeException e) {
-            log.error("Rating with id=" + ratingId + " was not updated. Error: " +
-                    e.getLocalizedMessage());
             return ResponseEntity.internalServerError().body(new MessageResponse("Rating with id=" + ratingId + " was not updated. Error: " +
                     e.getLocalizedMessage()));
         }

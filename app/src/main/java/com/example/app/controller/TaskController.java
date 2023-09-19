@@ -62,7 +62,6 @@ public class TaskController {
                     "New task " + task.getName() + " was created");
             return ResponseEntity.ok().body(task);
         } catch (RuntimeException e) {
-            log.error("Task with name " + taskDtoToCreate.getName() + " was not created. Error: " + e.getLocalizedMessage());
             return ResponseEntity.badRequest().body(new MessageResponse("Task with name " + taskDtoToCreate.getName() +
                     " was not created. Error: " + e.getLocalizedMessage()));
         }
@@ -75,7 +74,6 @@ public class TaskController {
             taskService.addFilesToTask(taskId, files);
             return ResponseEntity.ok().body(new MessageResponse("Files were uploaded"));
         } catch (RuntimeException e) {
-            log.error("Files were not uploaded. Error: " + e.getLocalizedMessage());
             return ResponseEntity.badRequest()
                     .body(new MessageResponse("Files were not uploaded. Error: " + e.getLocalizedMessage()));
         }
@@ -88,7 +86,6 @@ public class TaskController {
             taskService.deleteFileFromTask(taskId, fileUri);
             return ResponseEntity.ok().body(new MessageResponse("File was deleted"));
         } catch (RuntimeException e) {
-            log.error("File with uri " + fileUri + " was not deleted. Error: " + e.getLocalizedMessage());
             return ResponseEntity.badRequest().body(new MessageResponse("File with uri " +
                     fileUri + " was not deleted. Error: " + e.getLocalizedMessage()));
         }
@@ -101,7 +98,6 @@ public class TaskController {
             return ResponseEntity.ok().body(new MessageResponse("Task with name " +
                     taskDtoToUpdate.getName() + " was updated"));
         } catch (RuntimeException e) {
-            log.error("Task with name " + taskDtoToUpdate.getName() + " was not updated. Error: " + e.getLocalizedMessage());
             return ResponseEntity.badRequest().body(new MessageResponse("Task with name " + taskDtoToUpdate.getName() +
                     " was not updated. Error: " + e.getLocalizedMessage()));
         }

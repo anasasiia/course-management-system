@@ -20,7 +20,7 @@ import javax.persistence.Table;
 import java.util.List;
 
 @Entity
-@Table(name = "students")
+@Table(name = "student")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -52,5 +52,5 @@ public class Student {
 
     @JsonBackReference
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
-    private List<Rating> ratingList;
+    private List<Rating> ratings;
 }

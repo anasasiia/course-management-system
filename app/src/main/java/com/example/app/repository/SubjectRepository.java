@@ -11,24 +11,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface SubjectRepository extends JpaRepository<Subject, Long> {
     @Transactional
-    @Query(value = "SELECT s " +
-            "FROM Subjects s " +
-            "JOIN s.teachers t " +
-            "WHERE t.id = ?1 AND s.id = subjectName")
+    @Query(value = "SELECT s FROM Subject s JOIN s.teachers t WHERE t.id = ?1 AND s.name LIKE %?2%")
     Page<Subject> findSubjectByNameAndByTeacherId(long teacherId, String subjectName, Pageable pageable);
 
     @Transactional
-    @Query(value = "SELECT s " +
-            "FROM Subjects s " +
-            "JOIN s.teachers t " +
-            "WHERE t.id = ?1")
+    @Query(value = "SELECT s FROM Subject s JOIN s.teachers t WHERE t.id = ?1")
     Page<Subject> findAllSubjectsByTeacherId(long teacherId, Pageable pageable);
 
     @Transactional
-    @Query(value = "SELECT s " +
-            "FROM Subjects s " +
-            "JOIN s.groups g " +
-            "WHERE g.id = ?1")
+    @Query(value = "SELECT s FROM Subject s JOIN s.groups g WHERE g.id = ?1")
     Page<Subject> findAllSubjectsByGroupId(long groupId, Pageable pageable);
 
     Page<Subject> findAll(Pageable pageable);

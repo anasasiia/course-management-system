@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.Set;
 
 @Entity
-@Table(name = "task_ answers")
+@Table(name = "task_answer")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -26,7 +26,7 @@ public class TaskAnswer {
     private Date date = new Date();
 
     @ElementCollection
-    @CollectionTable(name = "tasks_answers_files", joinColumns = @JoinColumn(name = "task_ answer_id"))
+    @CollectionTable(name = "tasks_answers_files", joinColumns = @JoinColumn(name = "task_answer_id"))
     @Column(name = "file_uri")
     private Set<String> answersUri;
 

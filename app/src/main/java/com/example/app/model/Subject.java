@@ -1,7 +1,6 @@
 package com.example.app.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +9,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "subjects")
+@Table(name = "subject")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,12 +27,12 @@ public class Subject {
     @JoinTable(name = "groups_subjects",
         joinColumns = @JoinColumn(name = "subject_id"),
         inverseJoinColumns = @JoinColumn(name = "group_id"))
-    private List<Group> groupList;
+    private List<Group> groups;
 
     @JsonBackReference
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "teachers_subjects",
             joinColumns = @JoinColumn(name = "subject_id"),
             inverseJoinColumns = @JoinColumn(name = "teacher_id"))
-    private List<Teacher> teacherList;
+    private List<Teacher> teachers;
 }

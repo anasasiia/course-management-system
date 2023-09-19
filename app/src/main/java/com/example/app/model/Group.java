@@ -26,16 +26,16 @@ public class Group {
 
     @JsonBackReference
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
-    private List<Student> studentList = new ArrayList<>();
+    private List<Student> students = new ArrayList<>();
 
     @JsonBackReference
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
-    private List<Task> taskList;
+    private List<Task> tasks;
 
     @JsonManagedReference
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "groups_subjects",
     joinColumns = @JoinColumn(name = "group_id"),
     inverseJoinColumns = @JoinColumn(name = "subject_id"))
-    private List<Subject> subjectList;
+    private List<Subject> subjects;
 }

@@ -121,6 +121,4 @@ public class TaskServiceImpl implements TaskService {
             log.error("Task " + task.getName() + " was not saved. Error: " + e.getLocalizedMessage());
         }
     }
-
-
 }

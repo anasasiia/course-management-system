@@ -48,7 +48,7 @@ public class SubjectServiceImpl implements SubjectService {
     public void create(SubjectDto subjectDto) {
         Subject subject = new Subject();
         subject.setName(subjectDto.getName());
-        subjectDto.getTeachersId().forEach(id -> subject.getTeacherList().add(teacherService.findTeacherById(id)));
+        subjectDto.getTeachersId().forEach(id -> subject.getTeachers().add(teacherService.findTeacherById(id)));
         subjectRepository.save(subject);
     }
 
@@ -64,28 +64,28 @@ public class SubjectServiceImpl implements SubjectService {
     @Override
     public void addGroupToSubject(long subjectId, long groupId) {
         Subject subject = findSubjectById(subjectId);
-        subject.getGroupList().add(groupService.findGroupById(groupId));
+        subject.getGroups().add(groupService.findGroupById(groupId));
         subjectRepository.save(subject);
     }
 
     @Override
     public void deleteGroupToSubject(long subjectId, long groupId) {
         Subject subject = findSubjectById(subjectId);
-        subject.getGroupList().remove(groupService.findGroupById(groupId));
+        subject.getGroups().remove(groupService.findGroupById(groupId));
         subjectRepository.save(subject);
     }
 
     @Override
     public void addTeacherToSubject(long subjectId, long teacherId) {
         Subject subject = findSubjectById(subjectId);
-        subject.getTeacherList().add(teacherService.findTeacherById(teacherId));
+        subject.getTeachers().add(teacherService.findTeacherById(teacherId));
         subjectRepository.save(subject);
     }
 
     @Override
     public void deleteTeacherToSubject(long subjectId, long teacherId) {
         Subject subject = findSubjectById(subjectId);
-        subject.getTeacherList().remove(teacherService.findTeacherById(teacherId));
+        subject.getTeachers().remove(teacherService.findTeacherById(teacherId));
         subjectRepository.save(subject);
     }
 }

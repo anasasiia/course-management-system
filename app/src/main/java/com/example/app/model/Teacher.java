@@ -20,7 +20,7 @@ import javax.persistence.Table;
 import java.util.List;
 
 @Entity
-@Table(name = "teachers")
+@Table(name = "teacher")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -50,19 +50,19 @@ public class Teacher {
 
     @JsonBackReference
     @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
-    private List<Task> taskList;
+    private List<Task> tasks;
 
     @JsonManagedReference
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "teachers_subjects",
             joinColumns = @JoinColumn(name = "teacher_id"),
             inverseJoinColumns = @JoinColumn(name = "subject_id"))
-    private List<Subject> subjectList;
+    private List<Subject> subjects;
 
     @JsonManagedReference
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "teachers_groups",
         joinColumns = @JoinColumn(name = "teacher_id"),
         inverseJoinColumns = @JoinColumn(name = "group_id"))
-    private List<Group> groupList;
+    private List<Group> groups;
 }
