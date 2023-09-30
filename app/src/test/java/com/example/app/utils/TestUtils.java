@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
@@ -136,7 +137,7 @@ public class TestUtils {
 
     private ResultActions createGroup(GroupDto testGroupDto) throws Exception {
         final var request = post("/group/create")
-                .content(asJson(testStudentDto))
+                .content(asJson(testGroupDto))
                 .contentType(MediaType.APPLICATION_JSON);
         return mockMvc.perform(request);
     }
